@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const sequelize = require("./config/db"); // <- Import DB connection
 require("dotenv").config();
+const cors = require("cors");
 
 require("./customer/model");
 require("./courier/model");
@@ -13,6 +14,9 @@ require("./fulfilment/model");
 require("./products/model");
 require("./returns/model");
 require("./settlement/model");
+
+// Middleware to enable CORS
+app.use(cors());
 
 // Middleware to parse JSON
 app.use(express.json());
