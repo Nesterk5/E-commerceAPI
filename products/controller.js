@@ -1,27 +1,38 @@
+const express = require("express");
+const router = express.Router();
 const Product = require("../products/model");
 
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: Product management
+ */
+
+
 // Create Product
-exports.createProduct = async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Get All Products
-exports.getAllProducts = async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const products = await Product.findAll();
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Get Product by ID
-exports.getProductById = async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (product) {
@@ -32,10 +43,10 @@ exports.getProductById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Update Product
-exports.updateProduct = async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (product) {
@@ -47,10 +58,10 @@ exports.updateProduct = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Delete Product
-exports.deleteProduct = async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (product) {
@@ -62,4 +73,6 @@ exports.deleteProduct = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+module.exports = router;

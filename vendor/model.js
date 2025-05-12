@@ -30,7 +30,15 @@ const Vendor = sequelize.define(
       allowNull: false,
       unique: true,
     },
-
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      references: {
+        model: "users",
+        key: "id",
+      },
+    },
   },
   {
     timestamps: true,

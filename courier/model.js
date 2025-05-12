@@ -39,6 +39,15 @@ const Courier = sequelize.define(
     joining_date: {
       type: DataTypes.DATEONLY,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      references: {
+        model: "users",
+        key: "id",
+      },
+    },
   },
   {
     tableName: "couriers",

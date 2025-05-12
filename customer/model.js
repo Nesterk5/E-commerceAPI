@@ -27,6 +27,15 @@ const Customer = sequelize.define(
     location: {
       type: DataTypes.STRING,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      references: {
+        model: "users",
+        key: "id",
+      },
+    },
   },
   {
     tableName: "customers",

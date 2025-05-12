@@ -1,27 +1,37 @@
+const express = require("express");
+const router = express.Router();
 const Return = require("../returns/model");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Returns
+ *   description: Returns management
+ */
+
+
 // Create Return Request
-exports.createReturn = async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const returnRequest = await Return.create(req.body);
     res.status(201).json(returnRequest);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Get All Return Requests
-exports.getAllReturns = async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const returns = await Return.findAll();
     res.status(200).json(returns);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Get Return by ID
-exports.getReturnById = async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const returnRequest = await Return.findByPk(req.params.id);
     if (returnRequest) {
@@ -32,10 +42,10 @@ exports.getReturnById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Update Return (e.g., change status)
-exports.updateReturn = async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const returnRequest = await Return.findByPk(req.params.id);
     if (returnRequest) {
@@ -47,10 +57,10 @@ exports.updateReturn = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Delete Return
-exports.deleteReturn = async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const returnRequest = await Return.findByPk(req.params.id);
     if (returnRequest) {
@@ -62,4 +72,6 @@ exports.deleteReturn = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+module.exports = router;

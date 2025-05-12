@@ -1,27 +1,36 @@
+const express = require("express");
+const router = express.Router();
 const Delivery = require("../delivery/model");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Deliveries
+ *   description: Delivery management
+ */
+
 // Create delivery
-exports.createDelivery = async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const delivery = await Delivery.create(req.body);
     res.status(201).json(delivery);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Get all deliveries
-exports.getAllDeliveries = async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const deliveries = await Delivery.findAll();
     res.status(200).json(deliveries);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Get delivery by ID
-exports.getDeliveryById = async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const delivery = await Delivery.findByPk(req.params.id);
     if (delivery) {
@@ -32,10 +41,10 @@ exports.getDeliveryById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Update delivery
-exports.updateDelivery = async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const delivery = await Delivery.findByPk(req.params.id);
     if (delivery) {
@@ -47,10 +56,10 @@ exports.updateDelivery = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Delete delivery
-exports.deleteDelivery = async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const delivery = await Delivery.findByPk(req.params.id);
     if (delivery) {
@@ -62,4 +71,6 @@ exports.deleteDelivery = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+module.exports = router;

@@ -1,9 +1,13 @@
 const express = require("express");
 const app = express();
-const sequelize = require("./config/db"); // <- Import DB connection
+const sequelize = require("./config/db");
 require("dotenv").config();
 const cors = require("cors");
+const setupSwagger = require("./swagger");
 
+
+
+// Model imports
 require("./customer/model");
 require("./courier/model");
 require("./admin/model");
@@ -14,11 +18,10 @@ require("./fulfilment/model");
 require("./products/model");
 require("./returns/model");
 require("./settlement/model");
+require("./auth/user.model");
 
-// Middleware to enable CORS
+// Middlewares
 app.use(cors());
-
-// Middleware to parse JSON
 app.use(express.json());
 
 // Test route
@@ -26,110 +29,60 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
+
 // Test DB connection
 sequelize
   .authenticate()
-  .then(() => {
-    console.log("Database connected...");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to database:", err);
-  });
+  .then(() => console.log("Database connected..."))
+  .catch((err) => console.error("Unable to connect to database:", err));
 
-// Sync models to DB
+
+  // Sync models to DB
 sequelize
   .sync({ alter: true })
   .then(() => console.log("All models were synchronized!"))
   .catch((err) => console.error("Error syncing models:", err));
 
-// Auth Endpoints
+
+  // Routes mounting
 const authRoutes = require("./auth/authController");
 app.use(authRoutes);
 
-// Customer Endpoints
-const customerView = require("./customer/view");
-app.use("/", customerView);
+const protectedRoute = require("./auth/protectedRoute");
+app.use("/protected", protectedRoute);
 
-const courierController = require("./courier/controller");
+const customerRoutes = require("./customer/controller");
+app.use("/customers", customerRoutes);
 
-// Courier Endpoints
-app.post("/couriers", courierController.createCourier);
-app.get("/couriers", courierController.getAllCouriers);
-app.get("/couriers/:id", courierController.getCourierById);
-app.put("/couriers/:id", courierController.updateCourier);
-app.delete("/couriers/:id", courierController.deleteCourier);
+const adminRoutes = require("./admin/controller");
+app.use("/admins", adminRoutes);
 
-const vendorController = require("./vendor/controller");
+const courierRoutes = require("./courier/controller");
+app.use("/couriers", courierRoutes);
 
-// Vendor Endpoints
-app.post("/vendors", vendorController.createVendor);
-app.get("/vendors", vendorController.getAllVendors);
-app.get("/vendors/:id", vendorController.getVendorById);
-app.put("/vendors/:id", vendorController.updateVendor);
-app.delete("/vendors/:id", vendorController.deleteVendor);
+const vendorRoutes = require("./vendor/controller");
+app.use("/vendors", vendorRoutes);
 
-const adminController = require("./admin/controller");
+const orderRoutes = require("./orders/controller");
+app.use("/orders", orderRoutes);
 
-// Admin Endpoints
-app.post("/admins", adminController.createAdmin);
-app.get("/admins", adminController.getAllAdmins);
-app.get("/admins/:id", adminController.getAdminById);
-app.put("/admins/:id", adminController.updateAdmin);
-app.delete("/admins/:id", adminController.deleteAdmin);
+const deliveryRoutes = require("./delivery/controller");
+app.use("/deliveries", deliveryRoutes);
 
-const orderController = require("./orders/controller");
+const fulfilmentRoutes = require("./fulfilment/controller");
+app.use("/fulfilments", fulfilmentRoutes);
 
-// Order Endpoints
-app.post("/orders", orderController.createOrder);
-app.get("/orders", orderController.getAllOrders);
-app.get("/orders/:id", orderController.getOrderById);
-app.put("/orders/:id", orderController.updateOrder);
-app.delete("/orders/:id", orderController.deleteOrder);
+const productRoutes = require("./products/controller");
+app.use("/products", productRoutes);
 
-const deliveryController = require("./delivery/controller");
+const returnRoutes = require("./returns/controller");
+app.use("/returns", returnRoutes);
 
-// Delivery Endpoints
-app.post("/deliveries", deliveryController.createDelivery);
-app.get("/deliveries", deliveryController.getAllDeliveries);
-app.get("/deliveries/:id", deliveryController.getDeliveryById);
-app.put("/deliveries/:id", deliveryController.updateDelivery);
-app.delete("/deliveries/:id", deliveryController.deleteDelivery);
+const settlementRoutes = require("./settlement/controller");
+app.use("/settlements", settlementRoutes);
 
-const fulfilmentController = require("./fulfilment/controller");
-
-// Fulfillment Endpoints
-app.post("/fulfilments", fulfilmentController.createFulfilment);
-app.get("/fulfilments", fulfilmentController.getAllFulfilments);
-app.get("/fulfilments/:id", fulfilmentController.getFulfilmentById);
-app.put("/fulfilments/:id", fulfilmentController.updateFulfilment);
-app.delete("/fulfilments/:id", fulfilmentController.deleteFulfilment);
-
-const productController = require("./products/controller");
-
-// Product Endpoints
-app.post("/products", productController.createProduct);
-app.get("/products", productController.getAllProducts);
-app.get("/products/:id", productController.getProductById);
-app.put("/products/:id", productController.updateProduct);
-app.delete("/products/:id", productController.deleteProduct);
-
-const returnController = require("./returns/controller");
-
-// Return Endpoints
-app.post("/returns", returnController.createReturn);
-app.get("/returns", returnController.getAllReturns);
-app.get("/returns/:id", returnController.getReturnById);
-app.put("/returns/:id", returnController.updateReturn);
-app.delete("/returns/:id", returnController.deleteReturn);
-
-const settlementController = require("./settlement/controller");
-
-// Settlement Endpoints
-app.post("/settlements", settlementController.createSettlement);
-app.get("/settlements", settlementController.getAllSettlements);
-app.get("/settlements/:id", settlementController.getSettlementById);
-app.put("/settlements/:id", settlementController.updateSettlement);
-app.delete("/settlements/:id", settlementController.deleteSettlement);
+// Swagger docs
+setupSwagger(app);
 
 // Start server
 const PORT = process.env.PORT || 8000;

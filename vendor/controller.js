@@ -1,30 +1,37 @@
+const express = require("express");
+const router = express.Router();
 const Vendor = require("../vendor/model");
+
+/**
+ * @swagger
+ * tags:
+ *   name: Vendors
+ *   description: Vendor management
+ */
 
 
 // Create vendor
-exports.createVendor = async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const vendor = await Vendor.create(req.body);
     res.status(201).json(vendor);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
-
+});
 
 // Get all vendors
-exports.getAllVendors = async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const vendors = await Vendor.findAll();
     res.status(200).json(vendors);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
-
+});
 
 // Get vendor by ID
-exports.getVendorById = async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const vendor = await Vendor.findByPk(req.params.id);
     if (vendor) {
@@ -35,10 +42,10 @@ exports.getVendorById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Update vendor
-exports.updateVendor = async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const vendor = await Vendor.findByPk(req.params.id);
     if (vendor) {
@@ -50,10 +57,10 @@ exports.updateVendor = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Delete vendor
-exports.deleteVendor = async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const vendor = await Vendor.findByPk(req.params.id);
     if (vendor) {
@@ -65,4 +72,6 @@ exports.deleteVendor = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+module.exports = router;

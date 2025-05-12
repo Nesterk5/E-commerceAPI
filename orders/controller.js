@@ -1,27 +1,37 @@
+const express = require("express");
+const router = express.Router();
 const Order = require("../orders/model");
 
+
+/**
+ * @swagger
+ * tags:
+ *   name: Orders
+ *   description: Order management
+ */
+
 // Create order
-exports.createOrder = async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const order = await Order.create(req.body);
     res.status(201).json(order);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Get all orders
-exports.getAllOrders = async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const orders = await Order.findAll();
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Get order by ID
-exports.getOrderById = async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (order) {
@@ -32,10 +42,10 @@ exports.getOrderById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 // Update order
-exports.updateOrder = async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (order) {
@@ -47,10 +57,10 @@ exports.updateOrder = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
 
 // Delete order
-exports.deleteOrder = async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id);
     if (order) {
@@ -62,4 +72,6 @@ exports.deleteOrder = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+module.exports = router;

@@ -1,27 +1,36 @@
+const express = require("express");
+const router = express.Router();
 const Customer = require("../customer/model");
 
-// CREATE (new customer)
-exports.createCustomer = async (req, res) => {
+/**
+ * @swagger
+ * tags:
+ *   name: Customers
+ *   description: Customer management
+ */
+
+// Create customer
+router.post("/", async (req, res) => {
   try {
     const customer = await Customer.create(req.body);
     res.status(201).json(customer);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-};
+});
 
-// READ (list all)
-exports.getAllCustomers = async (req, res) => {
+// get all customers
+router.get("/", async (req, res) => {
   try {
     const customers = await Customer.findAll();
     res.json(customers);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-};
+});
 
-// READ (single customer)
-exports.getCustomerById = async (req, res) => {
+// get customer by id
+router.get("/:id", async (req, res) => {
   try {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) return res.status(404).json({ error: "Customer not found" });
@@ -29,10 +38,10 @@ exports.getCustomerById = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-};
+});
 
-// UPDATE
-exports.updateCustomer = async (req, res) => {
+// update customer
+router.put("/:id", async (req, res) => {
   try {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) return res.status(404).json({ error: "Customer not found" });
@@ -41,10 +50,10 @@ exports.updateCustomer = async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-};
+});
 
-// DELETE
-exports.deleteCustomer = async (req, res) => {
+// Delete customer
+router.delete("/:id", async (req, res) => {
   try {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer) return res.status(404).json({ error: "Customer not found" });
@@ -53,4 +62,6 @@ exports.deleteCustomer = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-};
+});
+
+module.exports = router;

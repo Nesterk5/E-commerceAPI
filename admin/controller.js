@@ -1,27 +1,96 @@
+const express = require("express");
+const router = express.Router();
 const Admin = require("../admin/model");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Admins
+ *   description: Admin management
+ */
+
+/**
+ * @swagger
+ * /admins:
+ *   post:
+ *     summary: Create a new admin
+ *     tags: [Admins]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 example: 1
+ *               name:
+ *                 type: string
+ *                 example: Glane K
+ *               email:
+ *                 type: string
+ *                 example: "glane@example.com"
+ *               user_id:
+ *                 type: integer
+ *                 example: 2
+ *     responses:
+ *       201:
+ *         description: Admin created successfully
+ */
+
 // Create admin
-exports.createAdmin = async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const admin = await Admin.create(req.body);
     res.status(201).json(admin);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
+
+/**
+ * @swagger
+ * /admins:
+ *   get:
+ *     summary: Get all admins
+ *     tags: [Admins]
+ *     responses:
+ *       200:
+ *         description: List of admins
+ */
 
 // Get all admins
-exports.getAllAdmins = async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const admins = await Admin.findAll();
     res.status(200).json(admins);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+/**
+ * @swagger
+ * /admins/{id}:
+ *   get:
+ *     summary: Get admin by ID
+ *     tags: [Admins]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Admin found
+ *       404:
+ *         description: Admin not found
+ */
 
 // Get admin by ID
-exports.getAdminById = async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const admin = await Admin.findByPk(req.params.id);
     if (admin) {
@@ -32,10 +101,45 @@ exports.getAdminById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+/**
+ * @swagger
+ * /admins/{id}:
+ *   put:
+ *     summary: Update an admin
+ *     tags: [Admins]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Alex Smith"
+ *               email:
+ *                 type: string
+ *                 example: "alex@example.com"
+ *               user_id:
+ *                 type: integer
+ *                 example: 3
+ *     responses:
+ *       200:
+ *         description: Admin updated
+ *       404:
+ *         description: Admin not found
+ */
 
 // Update admin
-exports.updateAdmin = async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const admin = await Admin.findByPk(req.params.id);
     if (admin) {
@@ -47,10 +151,29 @@ exports.updateAdmin = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-};
+});
+
+/**
+ * @swagger
+ * /admins/{id}:
+ *   delete:
+ *     summary: Delete an admin
+ *     tags: [Admins]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Admin deleted
+ *       404:
+ *         description: Admin not found
+ */
 
 // Delete admin
-exports.deleteAdmin = async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const admin = await Admin.findByPk(req.params.id);
     if (admin) {
@@ -62,4 +185,7 @@ exports.deleteAdmin = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
+
+// Export the router
+module.exports = router;

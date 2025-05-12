@@ -9,7 +9,7 @@ const User = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    username: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
@@ -19,7 +19,7 @@ const User = sequelize.define(
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM("admin", "vendor", "courier", "customer"),
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
