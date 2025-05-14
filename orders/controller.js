@@ -10,6 +10,24 @@ const Order = require("../orders/model");
  *   description: Order management
  */
 
+/**
+ * @swagger
+ * /orders:
+ *   post:
+ *     summary: Create a new order
+ *     tags: [Orders]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Order'
+ *     responses:
+ *       201:
+ *         description: order created successfully
+ *       400:
+ *         description: Bad request
+ */
 // Create order
 router.post("/", async (req, res) => {
   try {
@@ -20,6 +38,18 @@ router.post("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /orders:
+ *   get:
+ *     summary: Get all orders
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: List of orders
+ *       500:
+ *         description: Internal server error
+ */
 // Get all orders
 router.get("/", async (req, res) => {
   try {
@@ -30,6 +60,26 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /orders/{id}:
+ *   get:
+ *     summary: Get order by ID
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       500:
+ *         description: Internal server error
+ *       200:
+ *        description: order found
+ *       404:
+ *         description: order not found
+ */
 // Get order by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -44,6 +94,33 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /orders/{id}:
+ *   put:
+ *     summary: Update an order
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the order to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Order'
+ *     responses:
+ *       200:
+ *         description: order updated successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: order not found
+ */
 // Update order
 router.put("/:id", async (req, res) => {
   try {
@@ -59,6 +136,25 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /orders/{id}:
+ *   delete:
+ *     summary: Delete an order
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the order to delete
+ *     responses:
+ *       204:
+ *         description: order deleted
+ *       404:
+ *         description: order not found
+ */
 // Delete order
 router.delete("/:id", async (req, res) => {
   try {

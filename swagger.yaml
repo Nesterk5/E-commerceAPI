@@ -1,0 +1,257 @@
+components:
+  schemas:
+    Admin:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Admin Name"
+        email:
+          type: string
+          example: "admin@example.com"
+        user_id:
+          type: integer
+          example: 1
+
+    Courier:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        first_name:
+          type: string
+          example: "John"
+        last_name:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          example: "courier@example.com"
+        phone:
+          type: string
+          example: "+256123456789"
+        vehicle_type:
+          type: string
+          example: "bike"
+        vehicle_number:
+          type: string
+          example: "UAE1234X"
+        status:
+          type: string
+          example: "active"
+        location:
+          type: string
+          example: "Kampala"
+        joining_date:
+          type: string
+          format: date
+          example: "2024-05-01"
+        user_id:
+          type: integer
+          example: 2
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        first_name:
+          type: string
+          example: "Jane"
+        last_name:
+          type: string
+          example: "Smith"
+        email:
+          type: string
+          example: "jane@example.com"
+        phone:
+          type: string
+          example: "+256987654321"
+        location:
+          type: string
+          example: "Entebbe"
+        user_id:
+          type: integer
+          example: 3
+
+    Vendor:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        business_name:
+          type: string
+          example: "Business Name"
+        owner_name:
+          type: string
+          example: "Vendor Name"
+        email:
+          type: string
+          example: "logistics@example.com"
+        phone_number":
+          type: string
+          example: "+256123456789"
+        address:
+          type: string
+          example: "123 Business St, Kampala"
+        user_id:
+          type: integer
+          example: 4
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        customer_id:
+          type: integer
+          example: 3
+        vendor_id:
+          type: integer
+          example: 4
+        order_status:
+          type: string
+          example: "pending"
+        total_amount:
+          type: number
+          format: float
+          example: 150.75
+        payment_status:
+          type: string
+          example: "paid"
+        order_date:
+          type: string
+          format: date-time
+          example: "2024-05-01"
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        vendor_id:
+          type: integer
+          example: 4
+        name:
+          type: string
+          example: "Product Name"
+        description:
+          type: string
+          example: "Product Description"
+        price:
+          type: number
+          format: float
+          example: 25.50
+        stock_quantity:
+          type: integer
+          example: 100
+
+    Delivery:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        order_id:
+          type: integer
+          example: 1
+        courier_id:
+          type: integer
+          example: 2
+        delivery_status:
+          type: string
+          example: "in transit"
+        delivery_date:
+          type: string
+          format: date-time
+          example: "2024-05-02T10:00:00Z"
+        delivery_address:
+          type: string
+          example: "456 Delivery St, Kampala"
+        tracking_number:
+          type: string
+          example: "TRK123456789"
+
+    fulfilment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        order_id:
+          type: integer
+          example: 1
+        all_products_available:
+          type: boolean
+          example: true
+        packaging_done:
+          type: boolean
+          example: true
+        ready_for_delivery:
+          type: boolean
+          example: true
+        quality_checked:
+          type: boolean
+          example: true
+
+    Return:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        order_id:
+          type: integer
+          example: 1
+        customer_id:
+          type: integer
+          example: 3
+        reason:
+          type: string
+          example: "Product damaged"
+        status:
+          type: string
+          example: "pending"
+        return_date:
+          type: string
+          format: date
+          example: "2024-05-03"
+
+    Settlement:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        vendor_id:
+          type: integer
+          example: 4
+        order_id:
+          type: integer
+          example: 1
+        amount_due:
+          type: number
+          format: float
+          example: 1000.00
+        settlement_date:
+          type: string
+          format: date-time
+          example: "2024-05-04T10:00:00Z"
+        payment_method:
+          type: string
+          example: "bank_transfer"
+        platform_fee:
+          type: number
+          format: float
+          example: 50.00
+        payment_status:
+          type: string
+          example: "completed"

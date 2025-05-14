@@ -1,5 +1,10 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const _ = require("lodash");
+
+// Load the YAML file
+const swaggerSchemas = YAML.load("./swagger.yaml");
 
 // Swagger definition
 const swaggerDefinition = {
@@ -11,7 +16,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://127.0.0.1:8000",
+      url: "https://e-commerceapi-b1pw.onrender.com",
     },
   ],
 };
@@ -23,10 +28,27 @@ const options = {
   apis: ["./**/controller.js", "./**/authController.js"], //reads JSDoc comments from your controller files
 };
 
+// Generate spec from JSDoc
 const swaggerSpec = swaggerJSDoc(options);
 
+// Merge the schemas from YAML under `components`
+swaggerSpec.components = _.merge(
+  {},
+  swaggerSpec.components,
+  swaggerSchemas.components
+);
+
+// Serve the Swagger UI
 function setupSwagger(app) {
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+      swaggerOptions: {
+        defaultModelsExpandDepth: -1, // 👈 hides "Schemas"
+      },
+    })
+  );
 }
 
 module.exports = setupSwagger;

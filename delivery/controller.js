@@ -9,6 +9,24 @@ const Delivery = require("../delivery/model");
  *   description: Delivery management
  */
 
+/**
+ * @swagger
+ * /deliveries:
+ *   post:
+ *     summary: Create a new delivery
+ *     tags: [Deliveries]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Delivery'
+ *     responses:
+ *       201:
+ *         description: Delivery created successfully
+ *       400:
+ *         description: Bad request
+ */
 // Create delivery
 router.post("/", async (req, res) => {
   try {
@@ -19,6 +37,18 @@ router.post("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /deliveries:
+ *   get:
+ *     summary: Get all deliveries
+ *     tags: [Deliveries]
+ *     responses:
+ *       200:
+ *         description: List of all deliveries
+ *       500:
+ *         description: Internal server error
+ */
 // Get all deliveries
 router.get("/", async (req, res) => {
   try {
@@ -29,6 +59,26 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /deliveries/{id}:
+ *   get:
+ *     summary: Get delivery by ID
+ *     tags: [Deliveries]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       500:
+ *         description: Internal server error
+ *       200:
+ *        description: Delivery found
+ *       404:
+ *         description: Delivery not found
+ */
 // Get delivery by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -43,6 +93,33 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /deliveries/{id}:
+ *   put:
+ *     summary: Update a delivery
+ *     tags: [Deliveries]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the delivery to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Delivery'
+ *     responses:
+ *       200:
+ *         description: Delivery updated successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Delivery not found
+ */
 // Update delivery
 router.put("/:id", async (req, res) => {
   try {
@@ -58,6 +135,25 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /deliveries/{id}:
+ *   delete:
+ *     summary: Delete a delivery
+ *     tags: [Deliveries]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the delivery to delete
+ *     responses:
+ *       204:
+ *         description: delivery deleted
+ *       404:
+ *         description: delivery not found
+ */
 // Delete delivery
 router.delete("/:id", async (req, res) => {
   try {

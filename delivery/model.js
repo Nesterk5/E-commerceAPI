@@ -20,6 +20,10 @@ const Delivery = sequelize.define(
       type: DataTypes.ENUM("pending", "in transit", "delivered", "cancelled"),
       defaultValue: "pending",
     },
+    delivery_address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     // Foreign Key - Customer
     customer_id: {
       type: DataTypes.INTEGER,

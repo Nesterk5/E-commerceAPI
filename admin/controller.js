@@ -20,25 +20,15 @@ const Admin = require("../admin/model");
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: integer
- *                 example: 1
- *               name:
- *                 type: string
- *                 example: Glane K
- *               email:
- *                 type: string
- *                 example: "glane@example.com"
- *               user_id:
- *                 type: integer
- *                 example: 2
+ *             $ref: '#/components/schemas/Admin'
  *     responses:
  *       201:
  *         description: Admin created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Admin'
  */
-
 // Create admin
 router.post("/", async (req, res) => {
   try {
@@ -115,27 +105,16 @@ router.get("/:id", async (req, res) => {
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID of the admin to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Alex Smith"
- *               email:
- *                 type: string
- *                 example: "alex@example.com"
- *               user_id:
- *                 type: integer
- *                 example: 3
+ *             $ref: '#/components/schemas/Admin'
  *     responses:
  *       200:
- *         description: Admin updated
- *       404:
- *         description: Admin not found
+ *         description: Admin updated successfully
  */
 
 // Update admin
@@ -165,6 +144,7 @@ router.put("/:id", async (req, res) => {
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID of the admin to delete
  *     responses:
  *       204:
  *         description: Admin deleted

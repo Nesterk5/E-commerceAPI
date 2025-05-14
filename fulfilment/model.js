@@ -35,7 +35,7 @@ const Fulfilment = sequelize.define(
     },
   },
   {
-    tableName: "fulfillments",
+    tableName: "fulfilments",
     timestamps: true,
   }
 );

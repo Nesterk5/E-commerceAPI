@@ -10,6 +10,24 @@ const Fulfilment = require("../fulfilment/model");
  */
 
 
+/**
+ * @swagger
+ * /fulfilments:
+ *   post:
+ *     summary: Create a new fulfilment
+ *     tags: [Fulfilments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Fulfilment'
+ *     responses:
+ *       201:
+ *         description: Fulfilment created successfully
+ *       400:
+ *         description: Bad request
+ */
 // Create Fulfilment
 router.post("/", async (req, res) => {
   try {
@@ -20,6 +38,18 @@ router.post("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /fulfilments:
+ *   get:
+ *     summary: Get all fulfilments
+ *     tags: [Fulfilments]
+ *     responses:
+ *       200:
+ *         description: List of fulfilments
+ *       500:
+ *         description: Internal server error
+ */
 // Get All Fulfilments
 router.get("/", async (req, res) => {
   try {
@@ -30,6 +60,26 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /fulfilments/{id}:
+ *   get:
+ *     summary: Get fulfilment by ID
+ *     tags: [Fulfilments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       500:
+ *         description: Internal server error
+ *       200:
+ *        description: fulfilment found
+ *       404:
+ *         description: fulfilment not found
+ */
 // Get Fulfilment by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -43,6 +93,34 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+/**
+ * @swagger
+ * /fulfilments/{id}:
+ *   put:
+ *     summary: Update a fulfilment
+ *     tags: [Fulfilments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the fulfilment to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Fulfilment'
+ *     responses:
+ *       200:
+ *         description: Fulfilment updated successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Fulfilment not found
+ */
 
 // Update Fulfilment
 router.put("/:id", async (req, res) => {
@@ -59,6 +137,27 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /fulfilments/{id}:
+ *   delete:
+ *     summary: Delete a fulfilment
+ *     tags: [Fulfilments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the fulfilment to delete
+ *     responses:
+ *       204:
+ *         description: Fulfilment deleted
+ *       404:
+ *         description: Fulfilment not found
+ *       500:
+ *         description: Internal server error
+ */
 // Delete Fulfilment
 router.delete("/:id", async (req, res) => {
   try {
